@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3d6b52">
+  <meta name="description" content="Together with their families, Adharsh and Anekha joyfully invite you to celebrate their wedding on December 22, 2025.">
+  <meta property="og:title" content="Adharsh &amp; Anekha — Wedding Invitation">
+  <meta property="og:description" content="Join us as we celebrate the union of Adharsh and Anekha on December 22, 2025.">
+  <meta property="og:type" content="website">
+  <title>Adharsh &amp; Anekha | December 22, 2025</title>
+
+  <!-- Favicon (monogram) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%233d6b52'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='26' fill='%23f5efe6' font-family='serif'%3EA%26A%3C/text%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@200;300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger + Lenis (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       1. LOADER + NAME REVEAL (3-phase cinematic intro)
+  ════════════════════════════════════════════ -->
+  <div class="loader" id="loader" aria-hidden="true">
+
+    <!-- ── Phase 1: Rings with initials centered inside ── -->
+    <div class="loader__phase1" id="phase1">
+      <div class="loader__rings-wrap">
+        <svg class="loader__ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45"/></svg>
+        <svg class="loader__ring loader__ring--delay" viewBox="0 0 100 100"><circle cx="50" cy="50" r="35"/></svg>
+        <!-- Initials sit dead-center ON TOP of the rings -->
+        <span class="loader__initials">
+          <span class="loader__letter">A</span>
+          <span class="loader__amp">&amp;</span>
+          <span class="loader__letter">A</span>
+        </span>
+      </div>
+      <p class="loader__tagline">A celebration of love</p>
+    </div>
+
+    <!-- ── Phase 2: Name reveal (hidden, shown by GSAP) ── -->
+    <div class="loader__phase2" id="phase2">
+      <span class="loader__name loader__name--groom" id="nameGroom">
+        <span class="loader__name-first" id="nameGroomFirst">A</span><span class="loader__name-rest" id="nameGroomRest">dharsh</span>
+      </span>
+      <span class="loader__weds" id="nameWeds">Weds</span>
+      <span class="loader__name loader__name--bride" id="nameBride">
+        <span class="loader__name-first" id="nameBrideFirst">A</span><span class="loader__name-rest" id="nameBrideRest">nekha</span>
+      </span>
+      <p class="loader__date" id="nameDate">December 22, 2025</p>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SITE HEADER / NAVIGATION
+  ════════════════════════════════════════════ -->
+  <header class="site-header" id="siteHeader">
+    <a href="#hero" class="site-header__monogram" aria-label="Back to top">A<span>&amp;</span>A</a>
+    <button class="site-header__menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-header__nav" id="mainNav" aria-label="Main navigation">
+      <a href="#hero">Home</a>
+      <a href="#story">Our Story</a>
+      <a href="#details">Details</a>
+      <a href="#countdown">Countdown</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#venue">Venue</a>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT (hidden until intro completes)
+  ════════════════════════════════════════════ -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ═══════════════════════════════════════
+         3. HERO / LANDING
+    ════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+      <div class="hero__parallax-bg">
+        <div class="hero__image-placeholder">
+          <span class="placeholder-label">Couple's Hero Photo</span>
+        </div>
+      </div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content reveal-group">
+        <p class="hero__eyebrow reveal-item">Together with their families</p>
+        <h2 class="hero__title">
+          <span class="hero__title-name reveal-item">Adharsh</span>
+          <span class="hero__title-and reveal-item">&amp;</span>
+          <span class="hero__title-name reveal-item">Anekha</span>
+        </h2>
+        <div class="hero__divider reveal-item"></div>
+        <p class="hero__subtitle reveal-item">Request the pleasure of your company<br>at the celebration of their marriage</p>
+        <p class="hero__date-badge reveal-item">
+          <span class="hero__date-day">22</span>
+          <span class="hero__date-info">
+            <span>December</span>
+            <span>2025</span>
+          </span>
+        </p>
+      </div>
+      <div class="hero__scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         4. OUR STORY
+    ════════════════════════════════════════ -->
+    <section class="story" id="story">
+      <div class="story__container">
+        <div class="story__header reveal-group">
+          <p class="section-eyebrow reveal-item">How it all began</p>
+          <h2 class="section-title reveal-item">Our Story</h2>
+        </div>
+        <div class="story__grid">
+          <div class="story__image-col reveal-item">
+            <div class="story__image-placeholder image-placeholder--portrait">
+              <span class="placeholder-label">Couple Photo 1</span>
+            </div>
+          </div>
+          <div class="story__text-col reveal-group">
+            <p class="story__text reveal-item">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Their journey began with a chance encounter, and from that moment, they knew their paths were meant to intertwine.
+            </p>
+            <p class="story__text reveal-item">
+              Through laughter and tears, through seasons of growth and discovery, their love blossomed into something truly beautiful. Now, they invite you to witness the next chapter of their love story.
+            </p>
+            <p class="story__signature reveal-item">— With love, always</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         5. WEDDING DETAILS
+    ════════════════════════════════════════ -->
+    <section class="details" id="details">
+      <div class="details__container">
+        <div class="details__header reveal-group">
+          <p class="section-eyebrow reveal-item">Mark Your Calendar</p>
+          <h2 class="section-title reveal-item">Wedding Details</h2>
+        </div>
+        <div class="details__cards">
+          <!-- Card: Ceremony -->
+          <div class="details__card reveal-item">
+            <div class="details__card-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M24 4c-6 8-16 14-16 24a16 16 0 0032 0c0-10-10-16-16-24z"/>
+                <circle cx="24" cy="28" r="4"/>
+              </svg>
+            </div>
+            <h3 class="details__card-title">The Ceremony</h3>
+            <p class="details__card-time">10:00 AM — 12:00 PM</p>
+            <p class="details__card-desc">[Ceremony Venue Name]<br>[Venue Address Line]</p>
+          </div>
+          <!-- Card: Reception -->
+          <div class="details__card reveal-item">
+            <div class="details__card-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <rect x="6" y="20" width="36" height="22" rx="3"/>
+                <path d="M6 28h36M24 20v-8M18 12h12M14 20v-4h20v4"/>
+              </svg>
+            </div>
+            <h3 class="details__card-title">The Reception</h3>
+            <p class="details__card-time">7:00 PM — 11:00 PM</p>
+            <p class="details__card-desc">[Reception Venue Name]<br>[Venue Address Line]</p>
+          </div>
+          <!-- Card: Dress Code -->
+          <div class="details__card reveal-item">
+            <div class="details__card-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M16 8l-10 8 6 4v20h24V20l6-4-10-8"/>
+                <path d="M20 40v-10a4 4 0 018 0v10"/>
+              </svg>
+            </div>
+            <h3 class="details__card-title">Dress Code</h3>
+            <p class="details__card-time">Formal / Traditional</p>
+            <p class="details__card-desc">We'd love for you to dress in your finest traditional or formal attire.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         6. COUNTDOWN
+    ════════════════════════════════════════ -->
+    <section class="countdown" id="countdown">
+      <div class="countdown__bg-image">
+        <div class="hero__image-placeholder">
+          <span class="placeholder-label">Couple Photo — Countdown BG</span>
+        </div>
+      </div>
+      <div class="countdown__overlay"></div>
+      <div class="countdown__container reveal-group">
+        <p class="section-eyebrow section-eyebrow--light reveal-item">The big day is approaching</p>
+        <h2 class="section-title section-title--light reveal-item">Counting Down</h2>
+        <div class="countdown__timer" id="countdownTimer">
+          <div class="countdown__unit">
+            <span class="countdown__number" id="cdDays">000</span>
+            <span class="countdown__label">Days</span>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__unit">
+            <span class="countdown__number" id="cdHours">00</span>
+            <span class="countdown__label">Hours</span>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__unit">
+            <span class="countdown__number" id="cdMinutes">00</span>
+            <span class="countdown__label">Minutes</span>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__unit">
+            <span class="countdown__number" id="cdSeconds">00</span>
+            <span class="countdown__label">Seconds</span>
+          </div>
+        </div>
+        <p class="countdown__date reveal-item">December 22, 2025</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         7. VENUE
+    ════════════════════════════════════════ -->
+    <section class="venue" id="venue">
+      <div class="venue__container">
+        <div class="venue__header reveal-group">
+          <p class="section-eyebrow reveal-item">Where we celebrate</p>
+          <h2 class="section-title reveal-item">The Venue</h2>
+        </div>
+        <div class="venue__grid">
+          <div class="venue__info reveal-group">
+            <h3 class="venue__name reveal-item">[Venue Name]</h3>
+            <p class="venue__address reveal-item">
+              [Street Address]<br>
+              [City, State, PIN]
+            </p>
+            <p class="venue__note reveal-item">
+              Nestled amidst lush greenery and elegant architecture, this beautiful venue provides the perfect backdrop for our celebration of love.
+            </p>
+            <a href="#directions" class="venue__directions-link reveal-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Get Directions
+            </a>
+          </div>
+          <div class="venue__map-col reveal-item">
+            <div class="venue__map-placeholder" id="venueMap">
+              <div class="venue__map-pin">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+              </div>
+              <span class="placeholder-label">Interactive Map<br><small>Google Maps embed will go here</small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         8. GALLERY
+    ════════════════════════════════════════ -->
+    <section class="gallery" id="gallery">
+      <div class="gallery__container">
+        <div class="gallery__header reveal-group">
+          <p class="section-eyebrow reveal-item">Moments to cherish</p>
+          <h2 class="section-title reveal-item">Our Gallery</h2>
+        </div>
+        <div class="gallery__grid">
+          <div class="gallery__item gallery__item--tall reveal-item">
+            <div class="image-placeholder--portrait"><span class="placeholder-label">Photo 1</span></div>
+          </div>
+          <div class="gallery__item reveal-item">
+            <div class="image-placeholder--landscape"><span class="placeholder-label">Photo 2</span></div>
+          </div>
+          <div class="gallery__item reveal-item">
+            <div class="image-placeholder--square"><span class="placeholder-label">Photo 3</span></div>
+          </div>
+          <div class="gallery__item gallery__item--wide reveal-item">
+            <div class="image-placeholder--landscape"><span class="placeholder-label">Photo 4</span></div>
+          </div>
+          <div class="gallery__item reveal-item">
+            <div class="image-placeholder--portrait"><span class="placeholder-label">Photo 5</span></div>
+          </div>
+          <div class="gallery__item reveal-item">
+            <div class="image-placeholder--square"><span class="placeholder-label">Photo 6</span></div>
+          </div>
+          <div class="gallery__item gallery__item--tall reveal-item">
+            <div class="image-placeholder--portrait"><span class="placeholder-label">Photo 7</span></div>
+          </div>
+          <div class="gallery__item reveal-item">
+            <div class="image-placeholder--landscape"><span class="placeholder-label">Photo 8</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         9. FAMILY
+    ════════════════════════════════════════ -->
+    <section class="family" id="family">
+      <div class="family__container">
+        <div class="family__header reveal-group">
+          <p class="section-eyebrow reveal-item">With blessings from</p>
+          <h2 class="section-title reveal-item">Our Families</h2>
+        </div>
+        <div class="family__grid">
+          <!-- Groom's Family -->
+          <div class="family__side reveal-group">
+            <h3 class="family__side-title reveal-item">Groom's Family</h3>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Father's Name]</h4>
+              <p class="family__relation">Father of the Groom</p>
+            </div>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Mother's Name]</h4>
+              <p class="family__relation">Mother of the Groom</p>
+            </div>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Sibling's Name]</h4>
+              <p class="family__relation">Brother / Sister</p>
+            </div>
+          </div>
+          <!-- Bride's Family -->
+          <div class="family__side reveal-group">
+            <h3 class="family__side-title reveal-item">Bride's Family</h3>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Father's Name]</h4>
+              <p class="family__relation">Father of the Bride</p>
+            </div>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Mother's Name]</h4>
+              <p class="family__relation">Mother of the Bride</p>
+            </div>
+            <div class="family__member reveal-item">
+              <div class="family__avatar"><span class="placeholder-label placeholder-label--sm">Photo</span></div>
+              <h4 class="family__name">[Sibling's Name]</h4>
+              <p class="family__relation">Brother / Sister</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         10. TIMELINE / SCHEDULE
+    ════════════════════════════════════════ -->
+    <section class="timeline" id="timeline">
+      <div class="timeline__container">
+        <div class="timeline__header reveal-group">
+          <p class="section-eyebrow reveal-item">The Day's Journey</p>
+          <h2 class="section-title reveal-item">Event Schedule</h2>
+        </div>
+        <div class="timeline__track">
+          <div class="timeline__line"></div>
+          <div class="timeline__event timeline__event--left reveal-item">
+            <div class="timeline__dot"></div>
+            <div class="timeline__card">
+              <span class="timeline__time">9:00 AM</span>
+              <h4 class="timeline__event-title">Welcome &amp; Seating</h4>
+              <p class="timeline__event-desc">Guests arrive and are guided to their seats. Light refreshments served.</p>
+            </div>
+          </div>
+          <div class="timeline__event timeline__event--right reveal-item">
+            <div class="timeline__dot"></div>
+            <div class="timeline__card">
+              <span class="timeline__time">10:00 AM</span>
+              <h4 class="timeline__event-title">The Ceremony</h4>
+              <p class="timeline__event-desc">The sacred wedding ceremony begins with traditional rituals and blessings.</p>
+            </div>
+          </div>
+          <div class="timeline__event timeline__event--left reveal-item">
+            <div class="timeline__dot"></div>
+            <div class="timeline__card">
+              <span class="timeline__time">12:30 PM</span>
+              <h4 class="timeline__event-title">Lunch &amp; Celebration</h4>
+              <p class="timeline__event-desc">A grand feast to celebrate the newly-wed couple with music and joy.</p>
+            </div>
+          </div>
+          <div class="timeline__event timeline__event--right reveal-item">
+            <div class="timeline__dot"></div>
+            <div class="timeline__card">
+              <span class="timeline__time">7:00 PM</span>
+              <h4 class="timeline__event-title">Evening Reception</h4>
+              <p class="timeline__event-desc">Join us for an evening of dinner, dancing, and unforgettable memories.</p>
+            </div>
+          </div>
+          <div class="timeline__event timeline__event--left reveal-item">
+            <div class="timeline__dot"></div>
+            <div class="timeline__card">
+              <span class="timeline__time">9:30 PM</span>
+              <h4 class="timeline__event-title">Cake Cutting &amp; Toast</h4>
+              <p class="timeline__event-desc">Raise your glasses for the couple as they cut the wedding cake together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         11. SAVE THE DATE
+    ════════════════════════════════════════ -->
+    <section class="save-date" id="saveDate">
+      <div class="save-date__bg">
+        <div class="hero__image-placeholder">
+          <span class="placeholder-label">Couple Photo — Save the Date BG</span>
+        </div>
+      </div>
+      <div class="save-date__overlay"></div>
+      <div class="save-date__container reveal-group">
+        <p class="section-eyebrow section-eyebrow--light reveal-item">Don't forget</p>
+        <h2 class="section-title section-title--light reveal-item">Save the Date</h2>
+        <p class="save-date__text reveal-item">Add our wedding to your calendar so you don't miss a moment of the celebration.</p>
+        <div class="save-date__actions reveal-item">
+          <button class="btn btn--primary" id="addToCalendar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Add to Calendar
+          </button>
+          <button class="btn btn--outline" id="shareInvitation">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+            Share Invitation
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         12. DIRECTIONS
+    ════════════════════════════════════════ -->
+    <section class="directions" id="directions">
+      <div class="directions__container">
+        <div class="directions__header reveal-group">
+          <p class="section-eyebrow reveal-item">Find your way</p>
+          <h2 class="section-title reveal-item">Getting There</h2>
+        </div>
+        <div class="directions__content reveal-group">
+          <div class="directions__map-embed reveal-item">
+            <div class="directions__map-placeholder">
+              <span class="placeholder-label">Google Maps Embed<br><small>Full-width interactive map will go here</small></span>
+            </div>
+          </div>
+          <div class="directions__info reveal-item">
+            <div class="directions__info-card">
+              <h4>Venue Address</h4>
+              <p>[Full Venue Address]<br>[City, State, PIN Code]</p>
+              <a href="#" class="btn btn--primary btn--sm" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Open in Google Maps
+              </a>
+            </div>
+            <div class="directions__info-card">
+              <h4>Parking</h4>
+              <p>Ample parking is available at the venue. Valet service will be provided for your convenience.</p>
+            </div>
+            <div class="directions__info-card">
+              <h4>Accommodation</h4>
+              <p>Nearby hotels and guest accommodations can be arranged. Please reach out to the family for assistance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         13. CLOSING / FOOTER
+    ════════════════════════════════════════ -->
+    <footer class="closing" id="closing">
+      <div class="closing__container reveal-group">
+        <div class="closing__ornament reveal-item" aria-hidden="true">
+          <svg width="80" height="40" viewBox="0 0 80 40" fill="none" stroke="currentColor" stroke-width="0.8">
+            <path d="M0 20 Q20 0 40 20 Q60 40 80 20"/>
+          </svg>
+        </div>
+        <p class="closing__eyebrow reveal-item">With heartfelt gratitude</p>
+        <h2 class="closing__title reveal-item">
+          <span>Adharsh</span>
+          <span class="closing__amp">&amp;</span>
+          <span>Anekha</span>
+        </h2>
+        <p class="closing__message reveal-item">
+          We are truly blessed to have you in our lives.<br>
+          Your presence on our special day would mean the world to us.
+        </p>
+        <p class="closing__thank-you reveal-item">Thank you</p>
+        <div class="closing__divider reveal-item"></div>
+        <p class="closing__footer-note reveal-item">
+          Made with <span class="closing__heart">♥</span> for our special day
+        </p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
