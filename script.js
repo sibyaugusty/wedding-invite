@@ -7,7 +7,7 @@
   'use strict';
 
   /* ─── Constants ─── */
-  const WEDDING_DATE = new Date('2025-12-22T10:00:00+05:30');
+  const WEDDING_DATE = new Date('2026-12-22T10:00:00+05:30');
 
   /* ─── DOM Cache ─── */
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -132,21 +132,15 @@
       ease: 'power3.out'
     }, '-=0.3');
 
-    /* ── Phase 3: Hold, then fade to white and show content ── */
+    /* ── Phase 3: Hold, then smoothly transition into main content ── */
     tl.to({}, { duration: 1.0 }); /* Hold on the names */
 
-    /* 3a: Fade loader background to white */
-    tl.call(() => {
-      loader.classList.add('is-fading');
-    });
-
-    /* 3b: Show main content behind */
+    /* 3a: Show main content behind */
     tl.call(() => {
       mainContent.classList.add('is-visible');
-      siteHeader.classList.add('is-visible');
-    }, null, '+=0.4');
+    });
 
-    /* 3c: Fade out name-reveal content */
+    /* 3b: Fade out name-reveal content */
     tl.to(phase2, {
       opacity: 0,
       y: -30,
@@ -154,13 +148,32 @@
       ease: 'power2.inOut'
     }, '-=0.2');
 
-    /* onComplete (from timeline config above) hides the loader */
+    /* 3c: Smoothly fade out the loader overlay into the hero section */
+    tl.to(loader, {
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.inOut'
+    }, '-=0.4');
+
+    /* onComplete (from timeline config above) hides the loader completely */
   }
 
   /* ═══════════════════════════════════════════════════════════
      2. LENIS SMOOTH SCROLL
      ═══════════════════════════════════════════════════════════ */
   let lenis;
+
+  /* ── Header visibility on scroll ── */
+  function updateHeaderVisibility(scrollY) {
+    const y = typeof scrollY === 'number' ? scrollY : (window.scrollY || window.pageYOffset || 0);
+    if (y > 60) {
+      siteHeader.classList.add('is-visible');
+    } else {
+      if (!mainNav.classList.contains('is-open')) {
+        siteHeader.classList.remove('is-visible');
+      }
+    }
+  }
 
   function initLenis() {
     lenis = new Lenis({
@@ -173,7 +186,14 @@
       touchMultiplier: 2,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
+    lenis.on('scroll', (e) => {
+      ScrollTrigger.update();
+      updateHeaderVisibility(e.scroll);
+    });
+
+    window.addEventListener('scroll', () => {
+      updateHeaderVisibility();
+    }, { passive: true });
 
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
@@ -213,9 +233,21 @@
     /* ── Section reveals ── */
     setupSectionReveals();
 
+    /* ── Details parallax ── */
+    gsap.to('.details__bg-image', {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.details',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+
     /* ── Countdown parallax ── */
     gsap.to('.countdown__bg-image', {
-      yPercent: 20,
+      yPercent: 15,
       ease: 'none',
       scrollTrigger: {
         trigger: '.countdown',
@@ -225,12 +257,36 @@
       }
     });
 
+    /* ── Timeline parallax ── */
+    gsap.to('.timeline__bg-image', {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.timeline',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+
     /* ── Save the Date parallax ── */
     gsap.to('.save-date__bg', {
-      yPercent: 20,
+      yPercent: 15,
       ease: 'none',
       scrollTrigger: {
         trigger: '.save-date',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+
+    /* ── Closing parallax ── */
+    gsap.to('.closing__bg-image', {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.closing',
         start: 'top bottom',
         end: 'bottom top',
         scrub: 1,
@@ -269,18 +325,21 @@
       }
     });
 
-    /* ── Details cards stagger ── */
-    gsap.from('.details__card', {
-      y: 80,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.details__cards',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      }
+    /* ── Details cards reveal ── */
+    const detailCards = $$('.details__card');
+    detailCards.forEach((card) => {
+      gsap.from(card, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        clearProps: 'transform',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        }
+      });
     });
 
     /* ── Family cards stagger ── */
@@ -326,15 +385,8 @@
       }
     });
 
-    /* ── Header show/hide on scroll ── */
-    ScrollTrigger.create({
-      start: 'top -100',
-      onUpdate: (self) => {
-        if (self.direction === -1) {
-          siteHeader.classList.add('is-visible');
-        }
-      }
-    });
+    /* ── Initial header scroll check ── */
+    updateHeaderVisibility();
   }
 
   /* ── Generic section reveal ── */
@@ -385,13 +437,32 @@
 
     /* Countdown */
     gsap.from('.countdown .reveal-item', {
-      y: 40, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: '.countdown__container', start: 'top 80%', toggleActions: 'play none none none' }
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.12,
+      ease: 'power3.out',
+      clearProps: 'all',
+      scrollTrigger: {
+        trigger: '.countdown__container',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      }
     });
 
     gsap.from('.countdown__unit', {
-      y: 60, opacity: 0, scale: 0.9, duration: 0.8, stagger: 0.12, ease: 'power3.out',
-      scrollTrigger: { trigger: '.countdown__timer', start: 'top 85%', toggleActions: 'play none none none' }
+      y: 30,
+      opacity: 0,
+      scale: 0.95,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+      clearProps: 'all',
+      scrollTrigger: {
+        trigger: '.countdown__timer',
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
     });
 
     /* Directions info cards */
@@ -402,29 +473,88 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
-     4. COUNTDOWN TIMER
+     4. COUNTDOWN TIMER (Ultra-Smooth Rolling Digit Animation)
      ═══════════════════════════════════════════════════════════ */
-  function updateCountdown() {
-    const now = new Date();
-    const diff = WEDDING_DATE - now;
+  function updateAnimatedUnit(el, newVal) {
+    if (!el) return;
+    const currentVal = el.getAttribute('data-value');
+    if (currentVal === newVal) return;
 
-    if (diff <= 0) {
-      cdDays.textContent = '0';
-      cdHours.textContent = '00';
-      cdMinutes.textContent = '00';
-      cdSeconds.textContent = '00';
+    el.setAttribute('data-value', newVal);
+
+    // Initial load: render without animation
+    if (!el.classList.contains('is-initialized')) {
+      el.textContent = newVal;
+      el.classList.add('is-initialized');
       return;
     }
+
+    const oldText = currentVal || el.textContent;
+
+    // Create sliding roll elements
+    const oldDigit = document.createElement('span');
+    oldDigit.className = 'countdown__digit-old';
+    oldDigit.textContent = oldText;
+
+    const newDigit = document.createElement('span');
+    newDigit.className = 'countdown__digit-new';
+    newDigit.textContent = newVal;
+
+    el.innerHTML = '';
+    el.appendChild(oldDigit);
+    el.appendChild(newDigit);
+
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(oldDigit, {
+        y: '0%',
+        opacity: 1
+      }, {
+        y: '-100%',
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.in',
+        onComplete: () => {
+          oldDigit.remove();
+        }
+      });
+
+      gsap.fromTo(newDigit, {
+        y: '100%',
+        opacity: 0
+      }, {
+        y: '0%',
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power2.out',
+        onComplete: () => {
+          if (el.getAttribute('data-value') === newVal) {
+            el.textContent = newVal;
+          }
+        }
+      });
+    } else {
+      el.textContent = newVal;
+    }
+  }
+
+  function updateCountdown() {
+    const now = new Date();
+    // Dynamic countdown target (December 22)
+    let target = WEDDING_DATE;
+    if (target - now <= 0) {
+      target = new Date(now.getFullYear() + 1, 11, 22, 10, 0, 0);
+    }
+    const diff = Math.max(0, target - now);
 
     const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours   = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    cdDays.textContent    = String(days).padStart(3, '0');
-    cdHours.textContent   = String(hours).padStart(2, '0');
-    cdMinutes.textContent = String(minutes).padStart(2, '0');
-    cdSeconds.textContent = String(seconds).padStart(2, '0');
+    updateAnimatedUnit(cdDays, String(days).padStart(3, '0'));
+    updateAnimatedUnit(cdHours, String(hours).padStart(2, '0'));
+    updateAnimatedUnit(cdMinutes, String(minutes).padStart(2, '0'));
+    updateAnimatedUnit(cdSeconds, String(seconds).padStart(2, '0'));
   }
 
   function startCountdown() {
@@ -440,6 +570,11 @@
       const isOpen = mainNav.classList.toggle('is-open');
       menuToggle.classList.toggle('is-active');
       menuToggle.setAttribute('aria-expanded', isOpen);
+      if (isOpen) {
+        siteHeader.classList.add('is-visible');
+      } else {
+        updateHeaderVisibility();
+      }
     });
 
     navLinks.forEach((link) => {
@@ -471,7 +606,7 @@
     calBtn.addEventListener('click', () => {
       const icsContent = [
         'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Wedding Invitation//EN',
-        'BEGIN:VEVENT', 'DTSTART:20251222T043000Z', 'DTEND:20251222T173000Z',
+        'BEGIN:VEVENT', 'DTSTART:20261222T043000Z', 'DTEND:20261222T173000Z',
         'SUMMARY:Adharsh & Anekha Wedding',
         'DESCRIPTION:You are invited to the wedding celebration of Adharsh & Anekha.',
         'LOCATION:[Venue Name], [City]', 'STATUS:CONFIRMED',
@@ -500,7 +635,7 @@
     shareBtn.addEventListener('click', async () => {
       const shareData = {
         title: 'Adharsh & Anekha Wedding Invitation',
-        text: 'You are cordially invited to the wedding of Adharsh & Anekha on December 22, 2025!',
+        text: 'You are cordially invited to the wedding of Adharsh & Anekha on December 22, 2026!',
         url: window.location.href,
       };
 
