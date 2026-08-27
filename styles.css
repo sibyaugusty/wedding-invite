@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Island+Moments&display=swap');
+
 /* ══════════════════════════════════════════════════════════════════════════
    WEDDING INVITATION — UNIFIED EDITORIAL DARK LUXURY THEME
    Emerald Deep / Ivory White / Champagne Gold / Blush
@@ -30,6 +32,7 @@
   --ff-display: 'Playfair Display', 'Georgia', serif;
   --ff-body: 'Outfit', 'Helvetica Neue', sans-serif;
   --ff-script: 'Great Vibes', cursive;
+  --ff-signature: 'Island Moments', cursive;
 
   /* Spacing */
   --s-xs: 0.5rem;
@@ -544,41 +547,35 @@ footer[id] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(0.5rem, 1.8vh, 1.4rem);
+  gap: clamp(0.1rem, 0.6vh, 0.4rem);
   margin-bottom: clamp(1.4rem, 3.8vh, 2.8rem);
 }
 
 .hero__title-name {
-  font-family: var(--ff-display);
-  font-size: clamp(2.8rem, min(10vw, 6.6vh), 5.4rem);
-  font-weight: 500;
+  font-family: var(--ff-signature);
+  font-size: clamp(4.5rem, min(14vw, 9vh), 7.2rem);
+  font-weight: 400;
   color: var(--c-ivory);
-  line-height: 1.08;
-  letter-spacing: 0.015em;
-  text-shadow: 0 4px 24px hsla(0, 0%, 0%, 0.7), 0 0 40px hsla(36, 50%, 96%, 0.08);
-  display: inline-flex;
-  align-items: baseline;
-  white-space: nowrap;
-}
-
-.hero__name-first {
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 24px hsla(0, 0%, 0%, 0.8), 0 0 32px hsla(42, 65%, 55%, 0.35);
   display: inline-block;
-}
-
-.hero__name-rest {
-  display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
-  vertical-align: baseline;
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
 }
 
 .hero__title-and {
-  font-family: var(--ff-script);
-  font-size: clamp(1.8rem, min(6vw, 4.2vh), 3rem);
+  font-family: var(--ff-signature);
+  font-size: clamp(2.8rem, min(8.5vw, 5.5vh), 4.5rem);
+  font-weight: 400;
   color: var(--c-gold);
-  margin: 0;
+  margin: -0.35rem 0;
   line-height: 1;
-  text-shadow: 0 2px 16px hsla(42, 70%, 55%, 0.4);
+  text-shadow: 0 2px 20px hsla(42, 70%, 55%, 0.6);
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
 }
 
 .hero__divider {

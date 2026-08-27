@@ -24,12 +24,10 @@
   /* Phase 1 elements */
   const phase1 = $('#phase1');
 
-  /* Hero Name Elements */
-  const heroGroomFirst = $('#heroGroomFirst');
-  const heroGroomRest  = $('#heroGroomRest');
-  const heroAnd        = $('#heroAnd');
-  const heroBrideFirst = $('#heroBrideFirst');
-  const heroBrideRest  = $('#heroBrideRest');
+  /* Hero Handwriting Name elements */
+  const heroGroom = $('#heroGroom');
+  const heroWeds  = $('#heroWeds');
+  const heroBride = $('#heroBride');
 
   /* Countdown elements */
   const cdDays    = $('#cdDays');
@@ -38,14 +36,15 @@
   const cdSeconds = $('#cdSeconds');
 
   /* ═══════════════════════════════════════════════════════════
-     1. CINEMATIC INTRO SEQUENCE (Continuous Single-Flow Intro)
+     1. CINEMATIC INTRO SEQUENCE (Calligraphy Handwriting Signature)
      ═══════════════════════════════════════════════════════════
 
-     Phase 1 (0s–2.0s): Loader rings spin with "A & A" monogram
-     Phase 2 (2.0s–4.0s): Rings fade out, loader dissolves,
-                          Initials "A" & "A" appear, "&" blossoms,
-                          Letters expand into full names "Adharsh" & "Anekha".
-     Phase 3 (4.0s+):     Names remain 100% steady and visible;
+     Phase 1 (0s–1.6s): Loader rings spin with "A & A" monogram
+     Phase 2 (1.6s–4.5s): Rings fade out, loader dissolves,
+                          "Adharsh" writes in signature calligraphy,
+                          "weds" writes in golden script,
+                          "Anekha" writes in signature calligraphy.
+     Phase 3 (4.5s+):     Names stay permanently visible in Island Moments font;
                           Eyebrow, divider, subtitle, date badge, and
                           scroll cue glide into place around the names.
   */
@@ -55,30 +54,17 @@
       return;
     }
 
-    // Prepare main content behind loader immediately
+    // Prepare main content behind loader
     mainContent.classList.add('is-visible');
 
-    // Set initial states for hero elements
+    // Initial states: names hidden behind clip-path, secondary hero elements hidden
     gsap.set(['.hero__eyebrow', '.hero__divider', '.hero__subtitle', '.hero__date-badge', '.hero__scroll-cue'], {
       opacity: 0,
       y: 25
     });
-    if (heroGroomFirst && heroBrideFirst) {
-      gsap.set([heroGroomFirst, heroBrideFirst], {
-        opacity: 0,
-        y: 20,
-        scale: 0.9
-      });
-    }
-    if (heroAnd) {
-      gsap.set(heroAnd, {
-        opacity: 0,
-        scale: 0.6
-      });
-    }
-    if (heroGroomRest && heroBrideRest) {
-      gsap.set([heroGroomRest, heroBrideRest], {
-        width: 0,
+    if (heroGroom && heroBride && heroWeds) {
+      gsap.set([heroGroom, heroWeds, heroBride], {
+        clipPath: 'inset(0 100% 0 0)',
         opacity: 1
       });
     }
@@ -97,69 +83,64 @@
       }
     });
 
-    /* ── Phase 1: Wait for CSS ring + initials animations to play ── */
-    tl.to({}, { duration: 2.0 });
+    /* ── Phase 1: Wait for CSS ring + initials animations to play (1.6s) ── */
+    tl.to({}, { duration: 1.6 });
 
-    /* ── Phase 2: Smooth Crossfade to Hero Landing ── */
+    /* ── Phase 2: Calligraphy Handwriting Animation ── */
 
     /* 2a: Fade out Phase 1 rings & monogram */
     tl.to(phase1, {
       opacity: 0,
-      scale: 0.9,
-      duration: 0.6,
+      scale: 0.85,
+      duration: 0.5,
       ease: 'power2.inOut',
       onComplete: () => {
         phase1.style.display = 'none';
       }
     });
 
-    /* 2b: Dissolve loader background directly to reveal the hero section */
+    /* 2b: Smoothly dissolve the dark loader overlay to reveal the landing background */
     tl.to(loader, {
       opacity: 0,
       duration: 0.8,
       ease: 'power2.inOut'
-    }, '-=0.3');
+    }, '-=0.2');
 
-    /* 2c: Animate in the first letters "A" (groom) & "A" (bride) */
-    if (heroGroomFirst && heroBrideFirst) {
-      tl.to([heroGroomFirst, heroBrideFirst], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.55,
-        ease: 'power3.out',
-        stagger: 0.12
-      }, '-=0.5');
-    }
-
-    /* 2d: Fade in the stylized "&" */
-    if (heroAnd) {
-      tl.to(heroAnd, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.55,
-        ease: 'back.out(1.5)'
+    /* 2c: Smoothly write "Adharsh" in signature calligraphy */
+    if (heroGroom) {
+      tl.to(heroGroom, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.35,
+        ease: 'power1.inOut'
       }, '-=0.4');
     }
 
-    /* 2e: Smoothly expand "dharsh" and "nekha" outwards from the initial letters */
-    if (heroGroomRest && heroBrideRest) {
-      tl.to([heroGroomRest, heroBrideRest], {
-        width: 'auto',
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.12
-      }, '+=0.1');
+    /* 2d: Smoothly write "weds" in gold signature script */
+    if (heroWeds) {
+      tl.to(heroWeds, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 0.75,
+        ease: 'power1.inOut'
+      }, '-=0.15');
     }
 
-    /* ── Phase 3: Reveal surrounding hero details (NAMES REMAIN 100% VISIBLE & STEADY) ── */
+    /* 2e: Smoothly write "Anekha" in signature calligraphy */
+    if (heroBride) {
+      tl.to(heroBride, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.35,
+        ease: 'power1.inOut'
+      }, '-=0.1');
+    }
+
+    /* ── Phase 3: Seamless Flow into Landing Page (NAMES REMAIN 100% VISIBLE) ── */
     tl.to('.hero__eyebrow', {
       opacity: 1,
       y: 0,
       duration: 0.7,
       ease: 'power3.out',
       clearProps: 'transform,opacity'
-    }, '-=0.5');
+    }, '+=0.1');
 
     tl.to('.hero__divider', {
       opacity: 0.75,
@@ -183,7 +164,7 @@
       duration: 0.7,
       stagger: 0.12,
       ease: 'power3.out',
-      clearProps: 'transform,opacity'
+      clearProps: 'all'
     }, '-=0.35');
   }
 
