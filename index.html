@@ -53,18 +53,6 @@
       <p class="loader__tagline">A celebration of love</p>
     </div>
 
-    <!-- ── Phase 2: Name reveal (hidden, shown by GSAP) ── -->
-    <div class="loader__phase2" id="phase2">
-      <span class="loader__name loader__name--groom" id="nameGroom">
-        <span class="loader__name-first" id="nameGroomFirst">A</span><span class="loader__name-rest" id="nameGroomRest">dharsh</span>
-      </span>
-      <span class="loader__weds" id="nameWeds">Weds</span>
-      <span class="loader__name loader__name--bride" id="nameBride">
-        <span class="loader__name-first" id="nameBrideFirst">A</span><span class="loader__name-rest" id="nameBrideRest">nekha</span>
-      </span>
-      <p class="loader__date" id="nameDate">December 22, 2026</p>
-    </div>
-
   </div>
 
   <!-- ═══════════════════════════════════════════
@@ -101,16 +89,20 @@
         <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80" alt="Adharsh &amp; Anekha Hero Background" class="hero__bg-img" loading="eager">
       </div>
       <div class="hero__overlay"></div>
-      <div class="hero__content reveal-group">
-        <p class="hero__eyebrow reveal-item">Together with their families</p>
-        <h1 class="hero__title">
-          <span class="hero__title-name reveal-item">Adharsh</span>
-          <span class="hero__title-and reveal-item">&amp;</span>
-          <span class="hero__title-name reveal-item">Anekha</span>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Together with their families</p>
+        <h1 class="hero__title" id="heroTitle">
+          <span class="hero__title-name" id="heroGroom">
+            <span class="hero__name-first" id="heroGroomFirst">A</span><span class="hero__name-rest" id="heroGroomRest">dharsh</span>
+          </span>
+          <span class="hero__title-and" id="heroAnd">&amp;</span>
+          <span class="hero__title-name" id="heroBride">
+            <span class="hero__name-first" id="heroBrideFirst">A</span><span class="hero__name-rest" id="heroBrideRest">nekha</span>
+          </span>
         </h1>
-        <div class="hero__divider reveal-item"></div>
-        <p class="hero__subtitle reveal-item">Request the pleasure of your company<br>at the celebration of their marriage</p>
-        <p class="hero__date-badge reveal-item">
+        <div class="hero__divider"></div>
+        <p class="hero__subtitle">Request the pleasure of your company<br>at the celebration of their marriage</p>
+        <p class="hero__date-badge">
           <span class="hero__date-day">22</span>
           <span class="hero__date-info">
             <span>December</span>
@@ -538,6 +530,15 @@
         </p>
       </div>
     </footer>
+
+    <!-- ═══════════════════════════════════════
+         BACK TO TOP BUTTON (Smooth Scroll)
+    ════════════════════════════════════════ -->
+    <button class="back-to-top" id="backToTop" aria-label="Scroll back to top" title="Back to top">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
 
   </main>
 

@@ -19,18 +19,17 @@
   const menuToggle   = $('#menuToggle');
   const mainNav      = $('#mainNav');
   const navLinks     = $$('.site-header__nav a');
+  const backToTopBtn = $('#backToTop');
 
   /* Phase 1 elements */
   const phase1 = $('#phase1');
 
-  /* Phase 2 elements */
-  const phase2         = $('#phase2');
-  const nameGroomFirst = $('#nameGroomFirst');
-  const nameGroomRest  = $('#nameGroomRest');
-  const nameWeds       = $('#nameWeds');
-  const nameBrideFirst = $('#nameBrideFirst');
-  const nameBrideRest  = $('#nameBrideRest');
-  const nameDate       = $('#nameDate');
+  /* Hero Name Elements */
+  const heroGroomFirst = $('#heroGroomFirst');
+  const heroGroomRest  = $('#heroGroomRest');
+  const heroAnd        = $('#heroAnd');
+  const heroBrideFirst = $('#heroBrideFirst');
+  const heroBrideRest  = $('#heroBrideRest');
 
   /* Countdown elements */
   const cdDays    = $('#cdDays');
@@ -39,16 +38,16 @@
   const cdSeconds = $('#cdSeconds');
 
   /* ═══════════════════════════════════════════════════════════
-     1. CINEMATIC INTRO SEQUENCE (3-phase, auto-playing)
+     1. CINEMATIC INTRO SEQUENCE (Continuous Single-Flow Intro)
      ═══════════════════════════════════════════════════════════
 
-     Phase 1 (0s–2.5s):   Loader rings spin, "A & A" initials inside the rings
-     Phase 2 (2.5s–5.5s): Phase1 fades out → Phase2 fades in:
-                           - First letters "A" appear (one above, one below)
-                           - "Weds" fades in center
-                           - Letters expand to full names
-                           - Date fades in
-     Phase 3 (5.5s–7s):   Bg fades to white, then loader hides, main content shows
+     Phase 1 (0s–2.0s): Loader rings spin with "A & A" monogram
+     Phase 2 (2.0s–4.0s): Rings fade out, loader dissolves,
+                          Initials "A" & "A" appear, "&" blossoms,
+                          Letters expand into full names "Adharsh" & "Anekha".
+     Phase 3 (4.0s+):     Names remain 100% steady and visible;
+                          Eyebrow, divider, subtitle, date badge, and
+                          scroll cue glide into place around the names.
   */
   function runIntroSequence() {
     if (typeof gsap === 'undefined') {
@@ -56,106 +55,136 @@
       return;
     }
 
+    // Prepare main content behind loader immediately
+    mainContent.classList.add('is-visible');
+
+    // Set initial states for hero elements
+    gsap.set(['.hero__eyebrow', '.hero__divider', '.hero__subtitle', '.hero__date-badge', '.hero__scroll-cue'], {
+      opacity: 0,
+      y: 25
+    });
+    if (heroGroomFirst && heroBrideFirst) {
+      gsap.set([heroGroomFirst, heroBrideFirst], {
+        opacity: 0,
+        y: 20,
+        scale: 0.9
+      });
+    }
+    if (heroAnd) {
+      gsap.set(heroAnd, {
+        opacity: 0,
+        scale: 0.6
+      });
+    }
+    if (heroGroomRest && heroBrideRest) {
+      gsap.set([heroGroomRest, heroBrideRest], {
+        width: 0,
+        opacity: 1
+      });
+    }
+
     const tl = gsap.timeline({
       onComplete: () => {
         loader.classList.add('is-hidden');
+        window.scrollTo(0, 0);
+        document.documentElement.classList.remove('no-scroll');
         document.body.classList.remove('no-scroll');
         initScrollAnimations();
         initLenis();
+        if (lenis) {
+          lenis.scrollTo(0, { immediate: true });
+        }
       }
     });
 
     /* ── Phase 1: Wait for CSS ring + initials animations to play ── */
-    tl.to({}, { duration: 2.2 });
+    tl.to({}, { duration: 2.0 });
 
-    /* ── Phase 2: Crossfade from Phase1 to Phase2 ── */
+    /* ── Phase 2: Smooth Crossfade to Hero Landing ── */
 
-    /* 2a: Fade out entire Phase 1 (rings + initials + tagline) */
+    /* 2a: Fade out Phase 1 rings & monogram */
     tl.to(phase1, {
       opacity: 0,
-      scale: 0.85,
+      scale: 0.9,
       duration: 0.6,
       ease: 'power2.inOut',
       onComplete: () => {
-        phase1.style.display = 'none'; /* Remove from layout */
+        phase1.style.display = 'none';
       }
     });
 
-    /* 2b: Show Phase 2 container */
-    tl.to(phase2, {
-      opacity: 1,
-      duration: 0.1,
-      onStart: () => {
-        phase2.style.pointerEvents = 'auto';
-      }
-    });
-
-    /* 2c: Animate in the first letters "A" (groom) and "A" (bride) */
-    tl.fromTo([nameGroomFirst, nameBrideFirst], {
-      opacity: 0,
-      y: 20
-    }, {
-      opacity: 1,
-      y: 0,
-      duration: 0.5,
-      ease: 'power3.out',
-      stagger: 0.15
-    });
-
-    /* 2d: Fade in "Weds" in the center */
-    tl.fromTo(nameWeds, {
-      opacity: 0,
-      scale: 0.8
-    }, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.6,
-      ease: 'power3.out'
-    }, '-=0.15');
-
-    /* 2e: Expand the rest of the names — "dharsh" and "nekha" slide in */
-    tl.to([nameGroomRest, nameBrideRest], {
-      width: 'auto',
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.12
-    }, '+=0.3');
-
-    /* 2f: Fade in the date */
-    tl.fromTo(nameDate, {
-      opacity: 0,
-      y: 15
-    }, {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      ease: 'power3.out'
-    }, '-=0.3');
-
-    /* ── Phase 3: Hold, then smoothly transition into main content ── */
-    tl.to({}, { duration: 1.0 }); /* Hold on the names */
-
-    /* 3a: Show main content behind */
-    tl.call(() => {
-      mainContent.classList.add('is-visible');
-    });
-
-    /* 3b: Fade out name-reveal content */
-    tl.to(phase2, {
-      opacity: 0,
-      y: -30,
-      duration: 0.8,
-      ease: 'power2.inOut'
-    }, '-=0.2');
-
-    /* 3c: Smoothly fade out the loader overlay into the hero section */
+    /* 2b: Dissolve loader background directly to reveal the hero section */
     tl.to(loader, {
       opacity: 0,
       duration: 0.8,
       ease: 'power2.inOut'
+    }, '-=0.3');
+
+    /* 2c: Animate in the first letters "A" (groom) & "A" (bride) */
+    if (heroGroomFirst && heroBrideFirst) {
+      tl.to([heroGroomFirst, heroBrideFirst], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.55,
+        ease: 'power3.out',
+        stagger: 0.12
+      }, '-=0.5');
+    }
+
+    /* 2d: Fade in the stylized "&" */
+    if (heroAnd) {
+      tl.to(heroAnd, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.55,
+        ease: 'back.out(1.5)'
+      }, '-=0.4');
+    }
+
+    /* 2e: Smoothly expand "dharsh" and "nekha" outwards from the initial letters */
+    if (heroGroomRest && heroBrideRest) {
+      tl.to([heroGroomRest, heroBrideRest], {
+        width: 'auto',
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.12
+      }, '+=0.1');
+    }
+
+    /* ── Phase 3: Reveal surrounding hero details (NAMES REMAIN 100% VISIBLE & STEADY) ── */
+    tl.to('.hero__eyebrow', {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity'
+    }, '-=0.5');
+
+    tl.to('.hero__divider', {
+      opacity: 0.75,
+      y: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity'
+    }, '-=0.45');
+
+    tl.to('.hero__subtitle', {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity'
     }, '-=0.4');
 
-    /* onComplete (from timeline config above) hides the loader completely */
+    tl.to(['.hero__date-badge', '.hero__scroll-cue'], {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity'
+    }, '-=0.35');
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -163,7 +192,7 @@
      ═══════════════════════════════════════════════════════════ */
   let lenis;
 
-  /* ── Header visibility on scroll ── */
+  /* ── Header & Back to Top visibility on scroll ── */
   function updateHeaderVisibility(scrollY) {
     const y = typeof scrollY === 'number' ? scrollY : (window.scrollY || window.pageYOffset || 0);
     if (y > 60) {
@@ -172,6 +201,16 @@
       if (!mainNav.classList.contains('is-open')) {
         siteHeader.classList.remove('is-visible');
       }
+    }
+  }
+
+  function updateBackToTopVisibility(scrollY) {
+    const y = typeof scrollY === 'number' ? scrollY : (window.scrollY || window.pageYOffset || 0);
+    if (!backToTopBtn) return;
+    if (y > 350) {
+      backToTopBtn.classList.add('is-visible');
+    } else {
+      backToTopBtn.classList.remove('is-visible');
     }
   }
 
@@ -189,10 +228,12 @@
     lenis.on('scroll', (e) => {
       ScrollTrigger.update();
       updateHeaderVisibility(e.scroll);
+      updateBackToTopVisibility(e.scroll);
     });
 
     window.addEventListener('scroll', () => {
       updateHeaderVisibility();
+      updateBackToTopVisibility();
     }, { passive: true });
 
     gsap.ticker.add((time) => {
@@ -218,16 +259,6 @@
         end: 'bottom top',
         scrub: 1,
       }
-    });
-
-    /* ── Hero content stagger reveal ── */
-    gsap.from('.hero .reveal-item', {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.15,
-      ease: 'power3.out',
-      delay: 0.3,
     });
 
     /* ── Section reveals ── */
@@ -359,11 +390,12 @@
 
     /* ── Timeline events stagger ── */
     gsap.from('.timeline__event', {
-      x: (i, el) => el.classList.contains('timeline__event--left') ? -60 : 60,
+      x: (i, el) => el.classList.contains('timeline__event--left') ? -40 : 40,
       opacity: 0,
       duration: 0.8,
       stagger: 0.2,
       ease: 'power3.out',
+      clearProps: 'transform',
       scrollTrigger: {
         trigger: '.timeline__track',
         start: 'top 75%',
@@ -668,15 +700,43 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
+     9. BACK TO TOP (Smooth Scroll)
+     ═══════════════════════════════════════════════════════════ */
+  function setupBackToTop() {
+    if (!backToTopBtn) return;
+
+    backToTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(0, {
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
      INITIALIZATION
      ═══════════════════════════════════════════════════════════ */
   function init() {
+    /* Prevent browser from restoring scroll position midway down */
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    document.documentElement.classList.add('no-scroll');
     document.body.classList.add('no-scroll');
+
     startCountdown();
     setupNavigation();
     setupCalendar();
     setupShare();
     setupMagneticEffects();
+    setupBackToTop();
 
     /* Run the cinematic intro (auto, no click needed) */
     runIntroSequence();
