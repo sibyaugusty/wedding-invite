@@ -106,11 +106,12 @@
         loader.classList.add('is-hidden');
         unlockScroll();
         window.scrollTo(0, 0);
-        initScrollAnimations();
-        initLenis();
         if (lenis) {
           lenis.scrollTo(0, { immediate: true });
         }
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
       }
     });
 
@@ -261,80 +262,209 @@
   function initScrollAnimations() {
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ── Hero parallax ── */
-    gsap.to('.hero__parallax-bg', {
-      yPercent: 30,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
+    /* ── 1. Hero Multi-Layer Cinematic Parallax ── */
+    if ($('.hero__parallax-bg') && $('.hero')) {
+      // Deep background descent
+      gsap.fromTo('.hero__parallax-bg', 
+        { yPercent: 0 },
+        {
+          yPercent: 30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          }
+        }
+      );
+
+      // Hero Content foreground upward drift + fade
+      if ($('.hero__content')) {
+        gsap.to('.hero__content', {
+          yPercent: -20,
+          opacity: 0.15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        });
       }
-    });
+
+      // Scroll cue fast fade
+      if ($('.hero__scroll-cue')) {
+        gsap.to('.hero__scroll-cue', {
+          y: 40,
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: '25% top',
+            scrub: 0.5,
+          }
+        });
+      }
+    }
 
     /* ── Section reveals ── */
     setupSectionReveals();
 
-    /* ── Details parallax ── */
-    gsap.to('.details__bg-image', {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.details',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
+    /* ── 2. Our Story Floating Image Parallax ── */
+    if ($('.story__image-wrapper') && $('.story')) {
+      gsap.fromTo('.story__image-wrapper',
+        { y: -35 },
+        {
+          y: 35,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.story',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          }
+        }
+      );
+    }
+
+    /* ── 3. Content Sections Deep Background Parallax (Responsive on all devices) ── */
+    const parallaxSections = [
+      { trigger: '.details', target: '.details__bg-image' },
+      { trigger: '.countdown', target: '.countdown__bg-image' },
+      { trigger: '.timeline', target: '.timeline__bg-image' },
+      { trigger: '.save-date', target: '.save-date__bg' },
+      { trigger: '.closing', target: '.closing__bg-image' },
+    ];
+
+    parallaxSections.forEach(({ trigger, target }) => {
+      const el = $(target);
+      const trig = $(trigger);
+      if (el && trig) {
+        gsap.fromTo(el,
+          { yPercent: -20 },
+          {
+            yPercent: 20,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: trig,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+              invalidateOnRefresh: true,
+            }
+          }
+        );
       }
     });
 
-    /* ── Countdown parallax ── */
-    gsap.to('.countdown__bg-image', {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.countdown',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-      }
+    /* ── 4. Details Section Foreground Floating Depth ── */
+    if ($('.details__container') && $('.details')) {
+      gsap.fromTo('.details__container',
+        { y: 25 },
+        {
+          y: -25,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.details',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    /* ── 5. Countdown Floating HUD Parallax ── */
+    if ($('.countdown__container') && $('.countdown')) {
+      gsap.fromTo('.countdown__container',
+        { y: 35, scale: 0.98 },
+        {
+          y: -35,
+          scale: 1.02,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.countdown',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    /* ── 6. Venue Map Card Parallax ── */
+    if ($('.venue__map-card') && $('.venue')) {
+      gsap.fromTo('.venue__map-card',
+        { y: 30 },
+        {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.venue',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          }
+        }
+      );
+    }
+
+    /* ── 7. Gallery Editorial Floating Parallax Grid ── */
+    const galleryItems = $$('.gallery__item');
+    galleryItems.forEach((item, idx) => {
+      const drift = (idx % 3 === 0) ? 30 : (idx % 2 === 0 ? -25 : 20);
+      gsap.fromTo(item,
+        { y: drift },
+        {
+          y: -drift,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
     });
 
-    /* ── Timeline parallax ── */
-    gsap.to('.timeline__bg-image', {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.timeline',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-      }
-    });
+    /* ── 8. Save the Date Floating Depth ── */
+    if ($('.save-date__container') && $('.save-date')) {
+      gsap.fromTo('.save-date__container',
+        { y: 30 },
+        {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.save-date',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
+    }
 
-    /* ── Save the Date parallax ── */
-    gsap.to('.save-date__bg', {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.save-date',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-      }
-    });
-
-    /* ── Closing parallax ── */
-    gsap.to('.closing__bg-image', {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.closing',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-      }
-    });
+    /* ── 9. Closing Section Parallax ── */
+    if ($('.closing__container') && $('.closing')) {
+      gsap.fromTo('.closing__container',
+        { y: 30 },
+        {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.closing',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          }
+        }
+      );
+    }
 
     /* ── Timeline line draw ── */
     gsap.fromTo('.timeline__line', {
@@ -740,6 +870,9 @@
     }
     window.scrollTo(0, 0);
     lockScroll();
+
+    initScrollAnimations();
+    initLenis();
 
     startCountdown();
     setupNavigation();
