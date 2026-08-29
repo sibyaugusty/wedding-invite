@@ -35,6 +35,38 @@
   const cdMinutes = $('#cdMinutes');
   const cdSeconds = $('#cdSeconds');
 
+  /* ─── Scroll Locking (Disabled during page loading and intro sequence) ─── */
+  function preventScroll(e) {
+    e.preventDefault();
+  }
+
+  function preventScrollKeys(e) {
+    const keys = ['Space', 'PageUp', 'PageDown', 'End', 'Home', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    if (keys.includes(e.code) || [32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+      e.preventDefault();
+    }
+  }
+
+  function lockScroll() {
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+    window.scrollTo(0, 0);
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener('keydown', preventScrollKeys, { passive: false });
+  }
+
+  function unlockScroll() {
+    window.removeEventListener('wheel', preventScroll);
+    window.removeEventListener('touchmove', preventScroll);
+    window.removeEventListener('keydown', preventScrollKeys);
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+  }
+
+  // Lock scrolling immediately on script evaluation
+  lockScroll();
+
   /* ═══════════════════════════════════════════════════════════
      1. CINEMATIC INTRO SEQUENCE (Calligraphy Handwriting Signature)
      ═══════════════════════════════════════════════════════════
@@ -72,9 +104,8 @@
     const tl = gsap.timeline({
       onComplete: () => {
         loader.classList.add('is-hidden');
+        unlockScroll();
         window.scrollTo(0, 0);
-        document.documentElement.classList.remove('no-scroll');
-        document.body.classList.remove('no-scroll');
         initScrollAnimations();
         initLenis();
         if (lenis) {
@@ -708,9 +739,7 @@
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
-
-    document.documentElement.classList.add('no-scroll');
-    document.body.classList.add('no-scroll');
+    lockScroll();
 
     startCountdown();
     setupNavigation();
