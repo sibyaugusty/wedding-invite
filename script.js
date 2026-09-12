@@ -413,20 +413,27 @@
       );
     }
 
-    /* ── 7. Gallery Editorial Floating Parallax Grid ── */
+    /* ── 7. Gallery One-by-One Scroll Reveal (Standard Aligned Order & Zero Overlap) ── */
     const galleryItems = $$('.gallery__item');
     galleryItems.forEach((item, idx) => {
-      const drift = (idx % 3 === 0) ? 30 : (idx % 2 === 0 ? -25 : 20);
       gsap.fromTo(item,
-        { y: drift },
         {
-          y: -drift,
-          ease: 'none',
+          y: 45,
+          opacity: 0,
+          scale: 0.95,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          delay: (idx % 4) * 0.12,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
           scrollTrigger: {
             trigger: item,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
           }
         }
       );
@@ -478,23 +485,6 @@
         start: 'top 80%',
         end: 'bottom 60%',
         scrub: 1,
-      }
-    });
-
-    /* ── Gallery stagger ── */
-    gsap.from('.gallery__item', {
-      y: 60,
-      opacity: 0,
-      duration: 0.8,
-      stagger: {
-        each: 0.1,
-        from: 'random',
-      },
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.gallery__grid',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
       }
     });
 

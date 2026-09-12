@@ -926,7 +926,8 @@ footer[id] {
   justify-content: center;
   gap: var(--s-lg);
   margin-top: var(--s-lg);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .countdown__unit {
@@ -937,7 +938,8 @@ footer[id] {
   background: hsla(147, 28%, 18%, 0.65);
   border: 1px solid hsla(147, 30%, 65%, 0.3);
   border-radius: var(--radius-md);
-  min-width: 110px;
+  min-width: 0;
+  flex: 1;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 8px 32px hsla(147, 40%, 6%, 0.4),
@@ -966,6 +968,7 @@ footer[id] {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .countdown__digit-old,
@@ -1857,7 +1860,8 @@ footer[id] {
 
   .countdown__timer {
     gap: 0.6rem;
-    max-width: 320px;
+    max-width: 100%;
+    width: 100%;
     margin: 1.25rem auto 0;
   }
 
@@ -1867,7 +1871,8 @@ footer[id] {
 
   .countdown__unit {
     min-width: 0;
-    width: calc(50% - 0.35rem);
+    width: auto;
+    flex: 1;
     padding: 0.85rem 0.5rem;
   }
 
@@ -1918,26 +1923,28 @@ footer[id] {
   }
 
   .countdown__timer {
-    max-width: 290px;
-    gap: 0.5rem;
+    max-width: 100%;
+    width: 100%;
+    gap: 0.4rem;
   }
 
   .countdown__unit {
-    width: calc(50% - 0.25rem);
-    padding: 0.75rem 0.35rem;
+    width: auto;
+    flex: 1;
+    padding: 0.5rem 0.25rem;
   }
 
   .countdown__number {
-    font-size: 1.85rem;
+    font-size: 1.5rem;
   }
 
   .countdown__number-wrap {
-    height: 2.1rem;
+    height: 1.8rem;
   }
 
   .countdown__label {
-    font-size: 0.68rem;
-    margin-top: 0.3rem;
+    font-size: 0.6rem;
+    margin-top: 0.2rem;
   }
 
   .venue__name {
